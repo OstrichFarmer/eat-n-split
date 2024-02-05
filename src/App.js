@@ -91,5 +91,23 @@ function FormAddFriend() {
 }
 
 function FormSplitBill() {
-  return <form className="form-split-bill"></form>;
+  return (
+    <form className="form-split-bill">
+      <h2>SPLIT A BILL WITH X</h2>
+      <label>💰 Bill value </label>
+      <input type="text" />
+      <label>🧍🏽‍♀️ Your expenses</label>
+      <input type="text" />
+      <label>👬 X's expenses</label>
+      <input type="text" disabled />
+
+      <label>🤑 Who is paying the bill</label>
+      <select>
+        <option value="user">You</option>
+        <option value="friend">Friend</option>
+      </select>
+
+      <Button children={"Add"} />
+    </form>
+  );
 }
