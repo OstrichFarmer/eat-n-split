@@ -27,6 +27,10 @@ export default function App() {
   const [showAddFriend, setShowAddFriend] = useState(false);
   const [selectedFriend, setSelectedFriend] = useState(null);
 
+  function handleSelection(friend) {
+    setSelectedFriend(friend);
+  }
+
   function handleShowFriend() {
     setShowAddFriend((show) => !show);
   }
@@ -38,29 +42,29 @@ export default function App() {
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendList friends={friends} />
+        <FriendList friends={friends} onSelection={handleSelection} />
         {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
         <Button
           children={showAddFriend ? "Close" : "Add Friend"}
           onClick={handleShowFriend}
         />
       </div>
-      {selectedFriend && <FormSplitBill />}
+      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} />}
     </div>
   );
 }
 
-function FriendList({ friends }) {
+function FriendList({ friends, onSelection }) {
   return (
     <ul>
       {friends.map((friend) => (
-        <Friend friend={friend} key={friend.id} />
+        <Friend friend={friend} key={friend.id} onSelection={onSelection} />
       ))}
     </ul>
   );
 }
 
-function Friend({ friend }) {
+function Friend({ friend, onSelection }) {
   return (
     <>
       {" "}
@@ -81,7 +85,7 @@ function Friend({ friend }) {
 
         {friend.balance === 0 && <p>You and your friend are even</p>}
 
-        <Button children={"Select"} />
+        <Button onClick={() => onSelection(friend)} children={"Select"} />
       </li>
     </>
   );
@@ -134,15 +138,15 @@ function FormAddFriend({ onAddFriend }) {
   );
 }
 
-function FormSplitBill() {
+function FormSplitBill({ selectedFriend }) {
   return (
     <form className="form-split-bill">
-      <h2>SPLIT A BILL WITH X</h2>
+      <h2>SPLIT A BILL WITH {selectedFriend.name}</h2>
       <label>💰 Bill value </label>
       <input type="text" />
       <label>🧍🏽‍♀️ Your expenses</label>
       <input type="text" />
-      <label>👬 X's expenses</label>
+      <label>👬 {selectedFriend.name}'s expenses</label>
       <input type="text" disabled />
 
       <label>🤑 Who is paying the bill</label>
